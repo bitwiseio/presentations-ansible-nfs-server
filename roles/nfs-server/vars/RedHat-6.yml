@@ -16,14 +16,3 @@ nfs_server_config_settings:
   - { file: '/etc/sysconfig/nfs', key: 'LOCKD_TCPPORT', value: 32803 }
   - { file: '/etc/sysconfig/nfs', key: 'LOCKD_UDPPORT', value: 32769 }
 
-nfs_server_firewall_ports:
-  - { port: 111, proto: 'tcp' }
-  - { port: 111, proto: 'udp' }
-  - { port: 662, proto: 'tcp' }
-  - { port: 662, proto: 'udp' }
-  - { port: 892, proto: 'tcp' }
-  - { port: 892, proto: 'udp' }
-  - { port: 2049, proto: 'tcp' }
-  - { port: 2049, proto: 'udp' }
-  - { port: 32803, proto: 'tcp' }
-  - { port: 32769, proto: 'udp' }

@@ -3,3 +3,8 @@
   remote_user: root
   roles:
     - role: nfs-server
+
+- hosts: nfs-servers-iptables
+  remote_user: root
+  roles:
+    - role: nfs-server-iptables

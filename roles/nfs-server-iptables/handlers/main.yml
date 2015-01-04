@@ -1,0 +1,4 @@
+---
+- name: save iptables
+  command: /sbin/service iptables save
+

@@ -25,4 +25,3 @@
   with_items: nfs_server_services
   notify: restart nfs services
 
-- include: iptables.yml

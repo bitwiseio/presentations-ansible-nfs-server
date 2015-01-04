@@ -1,0 +1,3 @@
+{% for export in nfs_server.exports %}
+{{ '%-20s' % export.directory }} {{ export.options }}
+{% endfor %}

@@ -1,0 +1,11 @@
+---
+- name: re-export directories
+  command: exportfs -ra
+
+- name: restart nfs services
+  service: name={{ item }} state=restarted
+  with_items: nfs_server_services
+
+- name: save iptables
+  command: /sbin/service iptables save
+

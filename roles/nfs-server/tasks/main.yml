@@ -1,0 +1,28 @@
+---
+- name: include distribution specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+
+- name: ensure NFS packages are installed
+  yum: pkg={{ item }} state=present
+  with_items: nfs_server_packages
+
+- name: ensure /etc/exports is configured
+  template: src=exports.j2 dest=/etc/exports owner=root group=root mode=0755
+  notify: re-export directories
+
+- name: ensure NFS settings are configured
+  lineinfile: dest="{{ item.file }}"
+              regexp="^#?{{ item.key }}\s*="
+              line="{{ item.key }}={{ item.value }}"
+  with_items: nfs_server_config_settings
+  notify: restart nfs services
+
+- name: ensure NFS services are enabled and started
+  service: name={{ item }} enabled=yes
+  with_items: nfs_server_services
+  notify: restart nfs services
+
+- include: iptables.yml

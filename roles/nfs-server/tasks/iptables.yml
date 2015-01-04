@@ -1,0 +1,25 @@
+---
+
+- name: get current iptables NFS rules
+  shell: /sbin/iptables -S NFS || /bin/true
+  register: iptables_nfs_rules
+
+- name: get current iptables NFS rules
+  command: /sbin/iptables -S
+  register: iptables_all_rules
+
+- name: ensure iptables NFS chain exists
+  command: /sbin/iptables -N NFS
+  when: iptables_nfs_rules.stdout.find("-N NFS") == -1
+  notify: save iptables
+
+- name: ensure iptables NFS chain is used
+  command: /sbin/iptables -I INPUT 1 -j NFS
+  when: iptables_all_rules.stdout.find("-j NFS") == -1
+  notify: save iptables
+
+- name: ensure fireall ports are open
+  command: /sbin/iptables -A NFS -p {{ item.proto }}  --dport {{ item.port }} -j ACCEPT
+  when: iptables_nfs_rules.stdout.find(" -m {{ item.proto }} --dport {{ item.port }} ") == -1
+  with_items: nfs_server_firewall_ports
+  notify: save iptables

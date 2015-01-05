@@ -5,9 +5,15 @@
     - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
     - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
 
-- name: ensure NFS packages are installed
+- name: ensure NFS packages are installed (yum)
   yum: pkg={{ item }} state=present
   with_items: nfs_server_packages
+  when: ansible_pkg_mgr == "yum"
+
+- name: ensure NFS packages are installed (apt)
+  apt: name={{ item }} state=present
+  with_items: nfs_server_packages
+  when: ansible_pkg_mgr == "apt"
 
 - name: ensure /etc/exports is configured
   template: src=exports.j2 dest=/etc/exports owner=root group=root mode=0755
@@ -19,6 +25,14 @@
               line="{{ item.key }}={{ item.value }}"
   with_items: nfs_server_config_settings
   notify: restart nfs services
+
+- name: ensure NFS settings are configured (modprobe.d/options.conf)
+  lineinfile: dest=/etc/modprobe.d/options.conf
+              regexp="options lockd nlm"
+              line="options lockd nlm_udpport=32769 nlm_tcpport=32803"
+              create=yes
+  notify: restart nfs services
+  when: ansible_os_family == "Debian"
 
 - name: ensure NFS services are enabled and started
   service: name={{ item }} enabled=yes

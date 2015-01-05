@@ -2,6 +2,7 @@
 [nfs-servers]
 thrain
 balin
+dwalin
 
 [nfs-servers-iptables]
 thrain

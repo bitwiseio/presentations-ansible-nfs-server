@@ -1,0 +1,13 @@
+---
+
+nfs_server_packages:
+  - nfs-kernel-server
+
+nfs_server_services:
+  - nfs-kernel-server
+  - statd
+
+nfs_server_config_settings:
+  - { file: '/etc/default/nfs-kernel-server', key: 'RPCMOUNTDOPTS', value: "\\\"--manage-gids -p 20048\\\"" }
+  - { file: '/etc/default/nfs-common', key: 'STATDOPTS', value: "\\\"--port 662\\\"" }
+

@@ -8,3 +8,8 @@
   remote_user: root
   roles:
     - role: nfs-server-iptables
+
+- hosts: nfs-servers-firewalld
+  remote_user: root
+  roles:
+    - role: nfs-server-firewalld

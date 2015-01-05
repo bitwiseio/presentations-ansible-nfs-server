@@ -1,0 +1,14 @@
+---
+
+- name: include distribution specific variables
+  include_vars: "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+
+- name: ensure firewalld ports are open
+  firewalld: port="{{ item.port }}/{{ item.proto }}" permanent=true state=enabled
+  with_items: nfs_server_firewall_ports
+  notify: restart firewalld
+
+- name: ensure firewalld services are open
+  firewalld: service="{{ item }}" permanent=true state=enabled
+  with_items: nfs_server_firewall_services
+  notify: restart firewalld

@@ -1,0 +1,14 @@
+---
+
+nfs_server_packages:
+  - nfs-utils
+
+nfs_server_services:
+  - rpcbind
+  - nfs-server
+  - nfs-lock
+
+nfs_server_config_settings:
+  - { file: '/etc/sysconfig/nfs', key: 'LOCKD_TCPPORT', value: 32803 }
+  - { file: '/etc/sysconfig/nfs', key: 'LOCKD_UDPPORT', value: 32769 }
+

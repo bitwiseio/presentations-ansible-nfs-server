@@ -1,7 +1,10 @@
 
 [nfs-servers]
 thrain
+balin
 
 [nfs-servers-iptables]
 thrain
 
+[nfs-servers-firewalld]
+balin

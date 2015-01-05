@@ -1,0 +1,11 @@
+---
+
+nfs_server_firewall_services:
+  - rpc-bind
+  - nfs
+  - mountd
+
+nfs_server_firewall_ports:
+  - { port: 2049, proto: 'udp' }
+  - { port: 32803, proto: 'tcp' }
+  - { port: 32769, proto: 'udp' }
